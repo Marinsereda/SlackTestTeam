@@ -10,11 +10,29 @@ public class SlackTest extends TestBase {
         browser.get(TestData.siteLink);
         h.findAndFill(By.cssSelector("#domain"), workSpace + "\n");
     }
-
     @Test (priority = -1)
     static void connectToWorkSpaceSuccess()throws Exception{
         connectToWorkSpace(TestData.workSpace);
         Assert.assertEquals(browser.getCurrentUrl(),TestData.workSpaceUrl);
+    }
+
+    @Test
+    public static void testSignOut(){
+//        login;
+        browser.findElement(By.cssSelector("#team_menu")).click();
+        browser.findElement(By.cssSelector("#menu_items_scroller li#logout.logout_url")).click();
+
+        Assert.assertTrue(browser.findElements(By.cssSelector("#team_menu_user")).size()>0);
+
+    }
+    @Test
+    public static void testSlackbot(){
+//        login;
+        browser.findElement(By.cssSelector(".p-channel_sidebar__channel--im-slackbot")).click();
+        h.findAndFill(By.cssSelector(".msg_input"), TestData.message + "\n");
+
+        Assert.assertTrue(browser.findElements(By.cssSelector("#team_menu_user")).size()>0);
+
     }
 
     static void login (String username, String password) throws Exception{
@@ -28,4 +46,7 @@ public class SlackTest extends TestBase {
         browser.findElement(By.cssSelector("#team_menu_user_name")).click();
         Assert.assertTrue(browser.findElement(By.cssSelector("#logout")).isDisplayed());
     }
+
+
 }
+
