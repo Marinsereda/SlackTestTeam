@@ -1,6 +1,7 @@
 package com.teamTests;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 
@@ -15,6 +16,7 @@ public class TestBase {
 
     public static void openBrowser() {
         System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+        browser = new ChromeDriver();
         h = new Helper(browser);
 
         browser.manage().window().maximize();
