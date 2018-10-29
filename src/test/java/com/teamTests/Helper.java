@@ -3,18 +3,16 @@ package com.teamTests;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Helper {
+
     public WebDriver browser;
 
     Helper(WebDriver currentBrowser) {
         browser = currentBrowser;
     }
-
-
 
     public WebElement findAndFill(By selector, String value) {
         WebElement element = browser.findElement(selector);
@@ -35,8 +33,6 @@ public class Helper {
         browser.findElement(By.cssSelector("#user-create-submit")).click();
 
     }
-
-
 
 }
 
