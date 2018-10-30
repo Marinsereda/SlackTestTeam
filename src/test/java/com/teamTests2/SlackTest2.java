@@ -59,13 +59,18 @@ public class SlackTest2 extends TestBase {
     }
 
     //    @Test (dependsOnMethods = "loginSuccess" , priority = 20)
-    public static void testSignOut(){
-        browser2.findElement(By.cssSelector("#team_menu")).click();
-        browser2.findElement(By.cssSelector("#menu_items_scroller li#logout.logout_url")).click();
+//    public static void testSignOut(){
+//        browser2.findElement(By.cssSelector("#team_menu")).click();
+//        browser2.findElement(By.cssSelector("#menu_items_scroller li#logout.logout_url")).click();
+//
+//        Assert.assertTrue(browser2.findElements(By.cssSelector("#team_menu_user")).size()>0);
+//    }
 
-        Assert.assertTrue(browser2.findElements(By.cssSelector("#team_menu_user")).size()>0);
-    }
+@Test
+    public static void testMessageFromUser1(){
 
-
+    String selector = "//span[@class='c-message__body' and text() = '" + com.teamTests2.TestData.message + "']";
+    Assert.assertTrue(browser2.findElements(By.xpath(selector)).contains(com.teamTests2.TestData.message));
+}
 }
 
