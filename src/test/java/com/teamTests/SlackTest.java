@@ -27,13 +27,13 @@ public class SlackTest extends TestBase {
 
     @Test (dependsOnMethods = "connectToWorkSpaceSuccess", alwaysRun = true)
     static void loginSuccess() throws Exception{
-        login(TestData.login,TestData.password);
+        login(TestData.login_1,TestData.password_1);
         Assert.assertTrue(browser.findElements(By.cssSelector("#team_menu_user_name")).size()>0);
     }
 
 //    @Test (dependsOnMethods = "connectToWorkSpaceSuccess", alwaysRun = true , priority = -1)
     static void loginFail() throws Exception{
-        login("bad@login.com","badPass");
+        login("bad@login_1.com","badPass");
         Assert.assertTrue(browser.findElements(By.cssSelector("#team_menu_user_name")).size()<1);
     }
 
@@ -46,18 +46,18 @@ public class SlackTest extends TestBase {
     }
 
     @Test (dependsOnMethods = "loginSuccess")
-    static void messageBot() { //needs fix for assertion
+    static void messageBot() {
         browser.findElement(By.xpath("//span[text()='slackbot']")).click();
         Assert.assertTrue(browser.findElement(By.cssSelector("button[id='im_title']")).getText().contains("slackbot"));
 
         Actions actions = new Actions(browser);
         actions.moveToElement(browser.findElement(By.id("msg_input"))).click();
         actions.sendKeys(TestData.messageToBot + "\n").build().perform();
-//        browser.findElements(By.cssSelector(".c-message__body"));
-//        Assert.assertTrue(browser.findElement(By.cssSelector("#messages_container")).getText().contains(TestData.messageToBot));
+        String selector = "//span[@class='c-message__body' and text() = '" + TestData.messageToBot + "']";
+        Assert.assertEquals(browser.findElements(By.xpath(selector)).size(),1);
     }
 
-    @Test (dependsOnMethods = "loginSuccess" , priority = 20)
+//    @Test (dependsOnMethods = "loginSuccess" , priority = 20)
     public static void testSignOut(){
         browser.findElement(By.cssSelector("#team_menu")).click();
         browser.findElement(By.cssSelector("#menu_items_scroller li#logout.logout_url")).click();
