@@ -1,7 +1,7 @@
 package com.teamTests;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -31,18 +31,30 @@ public class SlackTest extends TestBase {
         Assert.assertTrue(browser.findElements(By.cssSelector("#team_menu_user_name")).size()>0);
     }
 
-    @Test (dependsOnMethods = "connectToWorkSpaceSuccess", alwaysRun = true , priority = -1)
+//    @Test (dependsOnMethods = "connectToWorkSpaceSuccess", alwaysRun = true , priority = -1)
     static void loginFail() throws Exception{
         login("bad@login.com","badPass");
         Assert.assertTrue(browser.findElements(By.cssSelector("#team_menu_user_name")).size()<1);
     }
 
-    @Test (dependsOnMethods = "loginSuccess")
+//    @Test (dependsOnMethods = "loginSuccess")
     public static void testSlackbot(){
-        browser.findElement(By.cssSelector(".p-channel_sidebar__channel--im-slackbot")).click();
-        h.findAndFill(By.cssSelector(".msg_input"), TestData.message + "\n");
+        browser.findElement(By.xpath("//span[text()='slackbot']")).click();
+        h.findAndFill(By.cssSelector(".msg_input"), TestData.messageToBot + "\n");
 
         Assert.assertTrue(browser.findElements(By.cssSelector("#team_menu_user")).size()>0);
+    }
+
+    @Test (dependsOnMethods = "loginSuccess")
+    static void messageBot() { //needs fix for assertion
+        browser.findElement(By.xpath("//span[text()='slackbot']")).click();
+        Assert.assertTrue(browser.findElement(By.cssSelector("button[id='im_title']")).getText().contains("slackbot"));
+
+        Actions actions = new Actions(browser);
+        actions.moveToElement(browser.findElement(By.id("msg_input"))).click();
+        actions.sendKeys(TestData.messageToBot + "\n").build().perform();
+//        browser.findElements(By.cssSelector(".c-message__body"));
+//        Assert.assertTrue(browser.findElement(By.cssSelector("#messages_container")).getText().contains(TestData.messageToBot));
     }
 
     @Test (dependsOnMethods = "loginSuccess" , priority = 20)
