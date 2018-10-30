@@ -1,4 +1,4 @@
-package com.teamTests;
+package com.teamTests2;
 
 public class TestData {
 
