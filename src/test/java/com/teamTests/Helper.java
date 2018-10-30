@@ -27,7 +27,7 @@ public class Helper {
     public void adminUserCreate(){
         browser.findElement(By.cssSelector("#system-admin-menu")).click();
         browser.findElement(By.cssSelector("#admin_users_menu")).click();
-        browser.findElement(By.cssSelector("input#login-form-authenticatePassword")).sendKeys("forautotests\n");
+        browser.findElement(By.cssSelector("input#login_1-form-authenticatePassword")).sendKeys("forautotests\n");
         browser.findElement(By.cssSelector("#create_user")).click();
 
         browser.findElement(By.cssSelector("#user-create-submit")).click();
