@@ -45,8 +45,25 @@ public class SlackTest extends TestBase {
         Assert.assertTrue(browser1.findElements(By.cssSelector("#team_menu_user")).size()>0);
     }
 
+    static void sendMessage(String name, String text) {
+        browser1.findElement(By.xpath("//span[text()='"+ name +"']")).click();
+        Assert.assertTrue(browser1.findElement(By.cssSelector("button[id='im_title']")).getText().contains(name));
+
+        Actions actions = new Actions(browser1);
+        actions.moveToElement(browser1.findElement(By.id("msg_input"))).click();
+        actions.sendKeys(text + "\n").build().perform();
+    }
+
     @Test (dependsOnMethods = "loginSuccess")
-    static void messageBot() {
+    static void sendMessageToUser() {
+        browser1.get(TestData.protocol + TestData.workSpace + "." + TestData.siteLink + "messages/");
+        sendMessage(TestData.userName_2, TestData.messageText);
+
+        String selector = "//span[@class='c-message__body' and text() = '" + TestData.messageText + "']";
+        Assert.assertEquals(browser1.findElements(By.xpath(selector)).size(),1);
+    }
+
+    /*static void messageBot() {
         browser1.findElement(By.xpath("//span[text()='slackbot']")).click();
         Assert.assertTrue(browser1.findElement(By.cssSelector("button[id='im_title']")).getText().contains("slackbot"));
 
@@ -55,7 +72,7 @@ public class SlackTest extends TestBase {
         actions.sendKeys(TestData.messageToBot + "\n").build().perform();
         String selector = "//span[@class='c-message__body' and text() = '" + TestData.messageToBot + "']";
         Assert.assertEquals(browser1.findElements(By.xpath(selector)).size(),1);
-    }
+    }*/
 
 //    @Test (dependsOnMethods = "loginSuccess" , priority = 20)
     public static void testSignOut(){
