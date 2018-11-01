@@ -10,25 +10,44 @@ public class SlackTest extends TestBase {
     static void connectToWorkSpace (String workSpace) throws Exception {
         browser1.get(TestData.protocol + TestData.siteLink);
         browser1.findElement(By.cssSelector("a[href='https://slack.com/signin']")).click();
-        h.findAndFill(By.cssSelector("#domain"), workSpace + "\n");
+        h1.findAndFill(By.cssSelector("#domain"), workSpace + "\n");
+    }
+    static void connectToWorkSpace2 (String workSpace) throws Exception {
+        browser2.get(TestData.protocol + TestData.siteLink);
+        browser2.findElement(By.cssSelector("a[href='https://slack.com/signin']")).click();
+        h2.findAndFill(By.cssSelector("#domain"), workSpace + "\n");
     }
 
     @Test
     static void connectToWorkSpaceSuccess()throws Exception{
         connectToWorkSpace(TestData.workSpace);
         Assert.assertTrue(browser1.getCurrentUrl().contains(TestData.protocol + TestData.workSpace + "." + TestData.siteLink));
+        connectToWorkSpace2(TestData.workSpace);
+        Assert.assertTrue(browser2.getCurrentUrl().contains(TestData.protocol + TestData.workSpace + "." + TestData.siteLink));
     }
 
     static void login (String username, String password) throws Exception{
         browser1.get(TestData.protocol + TestData.workSpace + "." + TestData.siteLink);
-        h.findAndFill(By.cssSelector("#email"), username);
-        h.findAndFill(By.cssSelector("#password"), password + "\n");
+        h1.findAndFill(By.cssSelector("#email"), username);
+        h1.findAndFill(By.cssSelector("#password"), password + "\n");
+    }
+
+    static void login2 (String username, String password) throws Exception{
+        browser2.get(TestData.protocol + TestData.workSpace + "." + TestData.siteLink);
+        h2.findAndFill(By.cssSelector("#email"), username);
+        h2.findAndFill(By.cssSelector("#password"), password + "\n");
     }
 
     @Test (dependsOnMethods = "connectToWorkSpaceSuccess", alwaysRun = true)
     static void loginSuccess() throws Exception{
         login(TestData.login_1,TestData.password_1);
         Assert.assertTrue(browser1.findElements(By.cssSelector("#team_menu_user_name")).size()>0);
+    }
+
+    @Test (dependsOnMethods = "connectToWorkSpaceSuccess", alwaysRun = true)
+    static void loginSuccess2() throws Exception{
+        login2(TestData.login_2,TestData.password_2);
+        Assert.assertTrue(browser2.findElements(By.cssSelector("#team_menu_user_name")).size()>0);
     }
 
 //    @Test (dependsOnMethods = "connectToWorkSpaceSuccess", alwaysRun = true , priority = -1)
@@ -40,7 +59,7 @@ public class SlackTest extends TestBase {
 //    @Test (dependsOnMethods = "loginSuccess")
     public static void testSlackbot(){
         browser1.findElement(By.xpath("//span[text()='slackbot']")).click();
-        h.findAndFill(By.cssSelector(".msg_input"), TestData.messageToBot + "\n");
+        h1.findAndFill(By.cssSelector(".msg_input"), TestData.messageToBot + "\n");
 
         Assert.assertTrue(browser1.findElements(By.cssSelector("#team_menu_user")).size()>0);
     }
