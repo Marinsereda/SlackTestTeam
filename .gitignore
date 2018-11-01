@@ -2,3 +2,5 @@
 *.iml
 chromedriver.exe
 target/
+#debug.log
+*.log

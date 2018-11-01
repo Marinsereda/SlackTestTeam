@@ -2,8 +2,11 @@ package com.teamTests;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.time.Duration;
 
 public class SlackTest extends TestBase {
 
@@ -22,6 +25,10 @@ public class SlackTest extends TestBase {
     static void connectToWorkSpaceSuccess()throws Exception{
         connectToWorkSpace(TestData.workSpace);
         Assert.assertTrue(browser1.getCurrentUrl().contains(TestData.protocol + TestData.workSpace + "." + TestData.siteLink));
+    }
+
+    @Test
+    static void connectToWorkSpaceSuccess2()throws Exception{
         connectToWorkSpace2(TestData.workSpace);
         Assert.assertTrue(browser2.getCurrentUrl().contains(TestData.protocol + TestData.workSpace + "." + TestData.siteLink));
     }
@@ -44,7 +51,7 @@ public class SlackTest extends TestBase {
         Assert.assertTrue(browser1.findElements(By.cssSelector("#team_menu_user_name")).size()>0);
     }
 
-    @Test (dependsOnMethods = "connectToWorkSpaceSuccess", alwaysRun = true)
+    @Test (dependsOnMethods = "connectToWorkSpaceSuccess2", alwaysRun = true)
     static void loginSuccess2() throws Exception{
         login2(TestData.login_2,TestData.password_2);
         Assert.assertTrue(browser2.findElements(By.cssSelector("#team_menu_user_name")).size()>0);
@@ -80,6 +87,9 @@ public class SlackTest extends TestBase {
 
         String selector = "//span[@class='c-message__body' and text() = '" + TestData.messageText + "']";
         Assert.assertEquals(browser1.findElements(By.xpath(selector)).size(),1);
+
+        /*output message in console*/
+        System.out.println(TestData.userName_1 + " has sent message to " + TestData.userName_2 + ": " + browser1.findElement(By.xpath(selector)).getText());
     }
 
     /*static void messageBot() {
@@ -92,6 +102,33 @@ public class SlackTest extends TestBase {
         String selector = "//span[@class='c-message__body' and text() = '" + TestData.messageToBot + "']";
         Assert.assertEquals(browser1.findElements(By.xpath(selector)).size(),1);
     }*/
+
+    @Test(dependsOnMethods = "sendMessageToUser")
+    static void getMessage() {
+//        browser2.get(TestData.protocol + TestData.workSpace + "." + TestData.siteLink + "messages/");
+
+        new FluentWait<>(browser2)
+                .withTimeout(Duration.ofSeconds(7))
+                .pollingEvery(Duration.ofSeconds(1)).ignoring(Exception.class)
+                .until(browser2 -> browser2.findElement(By.xpath("//span[text()='" + TestData.userName_1 + "']")))
+                .click();
+
+        /*this option may also be used*/
+//        browser2.findElement(By.xpath("//span[text()='"+ TestData.userName_1 +"']")).click();
+        Assert.assertTrue(browser2.findElement(By.cssSelector("button[id='im_title']")).getText().contains(TestData.userName_1));
+
+        String selector = "//span[@class='c-message__body' and text() = '" + TestData.messageText + "']";
+        Assert.assertEquals(browser2.findElements(By.xpath(selector)).size(),1);
+
+        /*output message in console*/
+        System.out.println(TestData.userName_2 + " has received message from " + TestData.userName_1 + ": " + browser2.findElement(By.xpath(selector)).getText());
+//
+//        List<WebElement>messageBodyLines = browser2.findElements(By.cssSelector(".c-message__body"));
+//        Assert.assertTrue(messageBodyLines.contains(com.teamTests2.TestData.messageText));
+//        проверка проходит, если есть конкретный текст сообщения, без генерирования даты
+    }
+
+
 
 //    @Test (dependsOnMethods = "loginSuccess" , priority = 20)
     public static void testSignOut(){
