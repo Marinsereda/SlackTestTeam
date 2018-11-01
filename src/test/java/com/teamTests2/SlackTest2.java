@@ -2,9 +2,14 @@ package com.teamTests2;
 
 import com.teamTests.TestData;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import com.teamTests.SlackTest;
+import com.teamTests.TestData;
+
+import java.util.List;
 
 public class SlackTest2 extends TestBase {
     static void connectToWorkSpace (String workSpace) throws Exception {
@@ -65,12 +70,21 @@ public class SlackTest2 extends TestBase {
 //
 //        Assert.assertTrue(browser2.findElements(By.cssSelector("#team_menu_user")).size()>0);
 //    }
+    @Test(dependsOnMethods = "loginSuccess", groups = "testMessagePath")
 
-@Test
-    public static void testMessageFromUser1(){
+    static void getMessage() {
 
-    String selector = "//span[@class='c-message__body' and text() = '" + com.teamTests2.TestData.message + "']";
-    Assert.assertTrue(browser2.findElements(By.xpath(selector)).contains(com.teamTests2.TestData.message));
-}
+//        browser2.get(com.teamTests2.TestData.protocol + com.teamTests2.TestData.workSpace + "." + com.teamTests2.TestData.siteLink + "messages/");
+
+        browser2.findElement(By.xpath("//span[text()='" + com.teamTests2.TestData.userName_1 + "']")).click();
+        Assert.assertTrue(browser2.findElement(By.cssSelector("button[id='im_title']")).getText().contains(com.teamTests2.TestData.userName_1));
+
+
+        String selector = "//span[@class='c-message__body' and text() = '" + com.teamTests2.TestData.messageText + "']";
+        Assert.assertEquals(browser2.findElements(By.xpath(selector)).size(),1);
+//        проверка проходит, если есть конкретный текст
+    }
+
+
 }
 
