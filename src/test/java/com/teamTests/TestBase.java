@@ -12,25 +12,28 @@ public class TestBase {
     public static WebDriver browser1;
     public static WebDriver browser2;
     static Helper h;
+    static Helper h2;
 
     @BeforeTest
     public static void openBrowser() {
         System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
         browser1 = new ChromeDriver();
 
-//        ChromeOptions options = new ChromeOptions();
-//        options.addArguments("--incognito");
-//        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-//        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-//        browser2 = new ChromeDriver(options);
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--incognito");
+        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+        browser2 = new ChromeDriver(options);
 
         h = new Helper(browser1);
+        h2 = new Helper(browser2);
 
         browser1.manage().window().maximize();
         browser1.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
 
-//        browser2.manage().window().maximize();
-//        browser2.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
+        browser2.manage().window().maximize();
+        browser2.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
     }
 
 //    @AfterTest
