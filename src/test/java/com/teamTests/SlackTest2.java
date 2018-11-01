@@ -45,7 +45,7 @@ public class SlackTest2 extends TestBase {
         Assert.assertTrue(browser2.findElements(By.cssSelector("#team_menu_user_name")).size()<1);
     }
 
-        @Test (dependsOnMethods = "loginSuccess")
+    @Test (dependsOnMethods = "loginSuccess")
     public static void testSlackbot() throws Exception {
 
         browser2.findElement(By.xpath("//span[text()='slackbot']")).click();
@@ -75,17 +75,21 @@ public class SlackTest2 extends TestBase {
 //        Assert.assertTrue(browser2.findElements(By.cssSelector("#team_menu_user")).size()>0);
 //    }
 //    @Test(dependsOnMethods = "loginSuccess")
-@Test
+
+    @Test (dependsOnMethods = "loginSuccess")
     static void getMessage() throws Exception {
-        loginSuccess();
+//        loginSuccess();
 
         new FluentWait<>(browser2)
-                .withTimeout(Duration.ofSeconds(5))
+                .withTimeout(Duration.ofSeconds(7))
                 .pollingEvery(Duration.ofSeconds(1)).ignoring(Exception.class)
                 .until(browser2 -> browser2.findElement(By.xpath("//span[text()='" + TestData.userName_1 + "']")))
                 .click();
 
         Assert.assertTrue(browser2.findElement(By.cssSelector("button[id='im_title']")).getText().contains(TestData.userName_1));
+
+        String selector = "//span[@class='c-message__body' and text() = '" + TestData.messageText + "']";
+        Assert.assertEquals(browser2.findElements(By.xpath(selector)).size(),1);
 
 //        String selector = "//span[@class='c-message__body' and text() = '" + TestData.messageText + "']";
 //        System.out.println(selector);
