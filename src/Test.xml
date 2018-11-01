@@ -1,16 +1,36 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
-<suite thread-count="1" verbose="1" name="slacktest" annotations="JDK" parallel="methods">
+<!--<suite thread-count="1" verbose="1" name="slacktest" annotations="JDK" parallel="tests" >-->
 
-    <test name="SlackTest">
-        <classes>
-            <class name="com.teamTests.SlackTest"/>
-        </classes>
-    </test>
+    <!--<test name="SlackTest">-->
+        <!--<classes>-->
+            <!--<class name="com.teamTests.SlackTest"/>-->
+            <!--<parameter name="groups" value="login">-->
+                <!--<include name="loginSuccess">-->
+                <!--</include>-->
+            <!--</parameter>-->
+        <!--</classes>-->
+    <!--</test>-->
 
-    <test name="SlackTest2">
+
+    <!--<test name="SlackTest2">-->
+        <!--<classes>-->
+            <!--<class name="com.teamTests2.SlackTest2"/>-->
+            <!--<parameter name="groups" value="login">-->
+                <!--<include name="loginSuccess">-->
+                <!--</include>-->
+            <!--</parameter>-->
+        <!--</classes>-->
+    <!--</test>-->
+
+
+<!--</suite>-->
+
+<suite name="slacktest">
+    <test name="SlackTest" verbose="1">
         <classes>
-            <class name="com.teamTests2.SlackTest2"/>
+            <class name="com.teamTests.SlackTest"></class>
+            <class name="com.teamTests2.SlackTest2"></class>
         </classes>
     </test>
 </suite>
