@@ -85,15 +85,33 @@ public class SlackTest2 extends TestBase {
                 .until(browser2 -> browser2.findElement(By.xpath("//span[text()='" + TestData.userName_1 + "']")))
                 .click();
 
+        listMessage();
+
         Assert.assertTrue(browser2.findElement(By.cssSelector("button[id='im_title']")).getText().contains(TestData.userName_1));
 
 //        String selector = "//span[@class='c-message__body' and text() = '" + TestData.messageText + "']";
 //        System.out.println(selector);
 //        Assert.assertTrue(browser2.findElements(By.xpath(selector)).size()>0);
-  
+
 //        List<WebElement>messageBodyLines = browser2.findElements(By.cssSelector(".c-message__body"));
 //        Assert.assertTrue(messageBodyLines.contains(com.teamTests2.TestData.messageText));
 //        проверка проходит, если есть конкретный текст сообщения, без генерирования даты
+    }
+
+    public static void listMessage(){
+        WebElement message= null;
+        List<WebElement> messageBodyLines = browser2.findElements(By.cssSelector("span.c-message__body"));
+        for(int i=0; i<= messageBodyLines.size(); i++){
+//            messageBodyLines.toArray();
+            if  (messageBodyLines.get(i).getText().contains(TestData.messageText)){
+                System.out.println("contains");
+            }
+            else
+                System.out.println("false");
+
+
+        }
+
     }
 
 }

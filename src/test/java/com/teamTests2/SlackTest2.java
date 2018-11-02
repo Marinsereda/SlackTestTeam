@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
@@ -17,6 +18,7 @@ public class SlackTest2 extends TestBase {
         browser2.findElement(By.cssSelector("a[href='https://slack.com/signin']")).click();
         h.findAndFill(By.cssSelector("#domain"), workSpace + "\n");
     }
+
 
     @Test
     static void connectToWorkSpaceSuccess()throws Exception{
@@ -51,6 +53,7 @@ public class SlackTest2 extends TestBase {
         Assert.assertTrue(browser2.findElements(By.cssSelector("#team_menu_user")).size()>0);
     }
 
+    @AfterMethod (dependsOnMethods = "sendMessageToUser")
     @Test (dependsOnMethods = "loginSuccess")
     static void messageBot() {
         browser2.findElement(By.xpath("//span[text()='slackbot']")).click();

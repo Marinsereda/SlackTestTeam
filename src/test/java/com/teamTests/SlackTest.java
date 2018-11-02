@@ -3,6 +3,7 @@ package com.teamTests;
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class SlackTest extends TestBase {
@@ -25,7 +26,7 @@ public class SlackTest extends TestBase {
         h.findAndFill(By.cssSelector("#password"), password + "\n");
     }
 
-    @Test (dependsOnMethods = "connectToWorkSpaceSuccess", alwaysRun = true)
+    @Test (dependsOnMethods = "connectToWorkSpaceSuccess", alwaysRun = true, groups = "login")
     static void loginSuccess() throws Exception{
         login(TestData.login_1,TestData.password_1);
         Assert.assertTrue(browser1.findElements(By.cssSelector("#team_menu_user_name")).size()>0);
@@ -54,13 +55,15 @@ public class SlackTest extends TestBase {
         actions.sendKeys(text + "\n").build().perform();
     }
 
-    @Test (dependsOnMethods = "loginSuccess")
+
+    @Test (dependsOnMethods = "loginSuccess", groups = "testMessagePath")
     static void sendMessageToUser() {
         browser1.get(TestData.protocol + TestData.workSpace + "." + TestData.siteLink + "messages/");
         sendMessage(TestData.userName_2, TestData.messageText);
 
         String selector = "//span[@class='c-message__body' and text() = '" + TestData.messageText + "']";
         Assert.assertEquals(browser1.findElements(By.xpath(selector)).size(),1);
+
     }
 
     /*static void messageBot() {
