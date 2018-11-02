@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-public class SlackTest extends TestBase {
+public class SlackTest extends TestSteps {
 
     @Test
     static void connectToWorkSpaceSuccess()throws Exception{
@@ -27,25 +27,26 @@ public class SlackTest extends TestBase {
 //        browser2.get(TestData.protocol + TestData.workSpace + "." + TestData.siteLink);
 //        h2.findAndFill(By.cssSelector("#email"), username);
 //        h2.findAndFill(By.cssSelector("#password"), password + "\n");
+
 //    }
+
+    @Test (dependsOnMethods = "connectToWorkSpaceSuccess", alwaysRun = true , priority = -1)
+    static void loginFail() throws Exception{
+        login("bad@login.com","badPass");
+        Assert.assertTrue(browser1.findElements(By.cssSelector("#team_menu_user_name")).size()<1);
+    }
 
     @Test (dependsOnMethods = "connectToWorkSpaceSuccess", alwaysRun = true)
     static void loginSuccess() throws Exception{
         login(TestData.login_1,TestData.password_1);
         Assert.assertTrue(browser1.findElements(By.cssSelector("#team_menu_user_name")).size()>0);
     }
-
 //    @Test (dependsOnMethods = "connectToWorkSpaceSuccess2", alwaysRun = true)
 //    static void loginSuccess2() throws Exception{
 //        login2(TestData.login_2,TestData.password_2);
 //        Assert.assertTrue(browser2.findElements(By.cssSelector("#team_menu_user_name")).size()>0);
-//    }
 
-//    @Test (dependsOnMethods = "connectToWorkSpaceSuccess", alwaysRun = true , priority = -1)
-    static void loginFail() throws Exception{
-        login("bad@login.com","badPass");
-        Assert.assertTrue(browser1.findElements(By.cssSelector("#team_menu_user_name")).size()<1);
-    }
+//    }
 
     @Test (dependsOnMethods = "loginSuccess")
     static void sendMessageToUser() {
@@ -82,7 +83,7 @@ public class SlackTest extends TestBase {
 
 
 
-//    @Test (dependsOnMethods = "loginSuccess" , priority = 20)
+    @Test (dependsOnMethods = "loginSuccess" , priority = 20)
     public static void testSignOut(){
         signOut();
         Assert.assertTrue(browser1.findElements(By.cssSelector("#team_menu_user")).size()>0);
