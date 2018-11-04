@@ -36,9 +36,10 @@ public class TestBase {
         browser2.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
     }
 
-//    @AfterTest
+    @AfterTest
     public void closeBrowser() {
-        h = new Helper(browser1);
+//        h = new Helper(browser1);
         browser1.quit();
+        browser2.quit();
     }
 }

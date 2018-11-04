@@ -38,7 +38,7 @@ public class SlackTest extends TestBase {
         Assert.assertTrue(browser1.findElements(By.cssSelector("#team_menu_user_name")).size()<1);
     }
 
-//    @Test (dependsOnMethods = "loginSuccess")
+    //@Test (dependsOnMethods = "loginSuccess")
     public static void testSlackbot(){
         browser1.findElement(By.xpath("//span[text()='slackbot']")).click();
         h.findAndFill(By.cssSelector(".msg_input"), TestData.messageToBot + "\n");

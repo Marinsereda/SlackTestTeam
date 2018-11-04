@@ -17,6 +17,7 @@ public class TestData {
 //    static String message = "Hello Slack";
     static String messageToBot = Helper.timeStamp() + " - message to SlackBot from MK";
     static String messageText = Helper.timeStamp() + " - message from MK";
+//    static String messageText = "02/11/18 01:31 - message from MK";
     static String nameNewChannel = "new channel test";
     static String purposeNewChannel = "new Purpose Test ";
 

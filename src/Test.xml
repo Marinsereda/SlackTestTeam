@@ -29,8 +29,21 @@
 <suite name="slacktest">
     <test name="SlackTest" verbose="1">
         <classes>
-            <class name="com.teamTests.SlackTest"></class>
-            <class name="com.teamTests2.SlackTest2"></class>
+            <class name="com.teamTests.SlackTest">
+                <methods>
+                    <include name="connectToWorkSpaceSuccess"></include>
+                    <include name="loginSuccess"></include>
+                    <include name="sendMessageToUser"></include>
+                </methods>
+            </class>
+            <class name="com.teamTests.SlackTest2">
+                <methods>
+                    <include name="connectToWorkSpaceSuccess"></include>
+                    <include name="loginSuccess"></include>
+                    <include name="getMessage1"></include>
+                    <parameter name="dependsOnMethods" value="loginSuccess"></parameter>
+                </methods>
+            </class>
         </classes>
     </test>
 </suite>

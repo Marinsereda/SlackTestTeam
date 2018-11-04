@@ -6,13 +6,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.List;
 
 public class SlackTest2 extends TestBase {
+    static boolean result;
     static void connectToWorkSpace(String workSpace) throws Exception {
         browser2.get(com.teamTests.TestData.protocol + com.teamTests.TestData.siteLink);
         browser2.findElement(By.cssSelector("a[href='https://slack.com/signin']")).click();
@@ -45,16 +45,17 @@ public class SlackTest2 extends TestBase {
         Assert.assertTrue(browser2.findElements(By.cssSelector("#team_menu_user_name")).size()<1);
     }
 
-        @Test (dependsOnMethods = "loginSuccess")
+      //  @Test (dependsOnMethods = "loginSuccess")
     public static void testSlackbot() throws Exception {
 
         browser2.findElement(By.xpath("//span[text()='slackbot']")).click();
-        h2.findAndFill(By.cssSelector(".msg_input"), TestData.messageToBot + "\n");
+            Thread.sleep(3000);
+
+            h2.findAndFill(By.cssSelector(".msg_input"), TestData.messageToBot + "\n");
 
         Assert.assertTrue(browser2.findElements(By.cssSelector("#team_menu_user")).size()>0);
     }
 
-//    @AfterMethod(dependsOnMethods = "sendMessageToUser")
     @Test (dependsOnMethods = "loginSuccess")
     static void messageBot() {
         browser2.findElement(By.xpath("//span[text()='slackbot']")).click();
@@ -75,44 +76,59 @@ public class SlackTest2 extends TestBase {
 //        Assert.assertTrue(browser2.findElements(By.cssSelector("#team_menu_user")).size()>0);
 //    }
 //    @Test(dependsOnMethods = "loginSuccess")
-@Test
-    static void getMessage() throws Exception {
-        loginSuccess();
+//@Test
+//    static void getMessage() throws Exception {
+//        loginSuccess();
+//        Thread.sleep(3000);
+//
+//        new FluentWait<>(browser2)
+//                .withTimeout(Duration.ofSeconds(5))
+//                .pollingEvery(Duration.ofSeconds(1)).ignoring(Exception.class)
+//                .until(browser2 -> browser2.findElement(By.xpath("//span[text()='" + TestData.userName_1 + "']")))
+//                .click();
+//
+//        Assert.assertTrue(listMessage());
+//
+////        Assert.assertTrue(browser2.findElement(By.cssSelector("button[id='im_title']")).getText().contains(TestData.userName_1));
+//
+////        String selector = "//span[@class='c-message__body' and text() = '" + TestData.messageText + "']";
+////        System.out.println(selector);
+////        Assert.assertTrue(browser2.findElements(By.xpath(selector)).size()>0);
+//
+////        List<WebElement>messageBodyLines = browser2.findElements(By.cssSelector(".c-message__body"));
+////        Assert.assertTrue(messageBodyLines.contains(com.teamTests2.TestData.messageText));
+////        проверка проходит, если есть конкретный текст сообщения, без генерирования даты
+//    }
+
+
+    @Test (dependsOnMethods = "loginSuccess")
+    static void getMessage1() throws Exception {
+//        loginSuccess();
+        Thread.sleep(3000);
 
         new FluentWait<>(browser2)
                 .withTimeout(Duration.ofSeconds(5))
                 .pollingEvery(Duration.ofSeconds(1)).ignoring(Exception.class)
                 .until(browser2 -> browser2.findElement(By.xpath("//span[text()='" + TestData.userName_1 + "']")))
                 .click();
+        Thread.sleep(3000);
 
-        listMessage();
-
-        Assert.assertTrue(browser2.findElement(By.cssSelector("button[id='im_title']")).getText().contains(TestData.userName_1));
-
-//        String selector = "//span[@class='c-message__body' and text() = '" + TestData.messageText + "']";
-//        System.out.println(selector);
-//        Assert.assertTrue(browser2.findElements(By.xpath(selector)).size()>0);
-
-//        List<WebElement>messageBodyLines = browser2.findElements(By.cssSelector(".c-message__body"));
-//        Assert.assertTrue(messageBodyLines.contains(com.teamTests2.TestData.messageText));
-//        проверка проходит, если есть конкретный текст сообщения, без генерирования даты
+        Assert.assertTrue(checkLines());
     }
+    public static boolean checkLines () throws InterruptedException {
 
-    public static void listMessage(){
-        WebElement message= null;
-        List<WebElement> messageBodyLines = browser2.findElements(By.cssSelector("span.c-message__body"));
-        for(int i=0; i<= messageBodyLines.size(); i++){
-//            messageBodyLines.toArray();
-            if  (messageBodyLines.get(i).getText().contains(TestData.messageText)){
-                System.out.println("contains");
+        List<WebElement> messageLines = browser2.findElements(By.cssSelector("span.c-message__body"));
+        for (WebElement line: messageLines){
+            if (line.getText().equals(TestData.messageText)){
+                result= true;
+                break;
             }
             else
-                System.out.println("false");
-
-
+                result=false;
         }
-
+        return result;
     }
 
-}
+
+    }
 
