@@ -8,13 +8,13 @@ import java.util.Date;
 
 public class Helper {
 
-    public WebDriver browser;
+    public static WebDriver browser;
 
     Helper(WebDriver currentBrowser) {
         browser = currentBrowser;
     }
 
-    public WebElement findAndFill(By selector, String value) {
+    public static WebElement findAndFill(By selector, String value) {
         WebElement element = browser.findElement(selector);
         element.sendKeys(value);
         return element;
