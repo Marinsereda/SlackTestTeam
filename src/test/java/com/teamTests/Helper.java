@@ -8,13 +8,20 @@ import java.util.Date;
 
 public class Helper {
 
-    public static WebDriver browser;
+//    public static WebDriver browserHelper;
 
-    Helper(WebDriver currentBrowser) {
-        browser = currentBrowser;
+//    Helper(WebDriver currentBrowser) {
+//        browserHelper = currentBrowser;
+//    }
+
+    public WebDriver browser;
+    Helper (WebDriver desiredBrowser) {
+        browser = desiredBrowser;
     }
 
-    public static WebElement findAndFill(By selector, String value) {
+
+    public WebElement findAndFill(By selector, String value) {
+        System.out.println(browser);
         WebElement element = browser.findElement(selector);
         element.sendKeys(value);
         return element;
@@ -24,7 +31,7 @@ public class Helper {
         return new SimpleDateFormat("dd/MM/yy HH:mm").format(new Date());
     }
 
-    public void adminUserCreate(){
+    public void adminUserCreate(WebDriver browser){
         browser.findElement(By.cssSelector("#system-admin-menu")).click();
         browser.findElement(By.cssSelector("#admin_users_menu")).click();
         browser.findElement(By.cssSelector("input#login_1-form-authenticatePassword")).sendKeys("forautotests\n");

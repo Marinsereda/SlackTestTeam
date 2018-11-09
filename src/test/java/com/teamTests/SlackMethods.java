@@ -4,35 +4,55 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import com.teamTests.Helper;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import java.util.List;
 
 public class SlackMethods {
-    public static WebDriver browser;
+   private WebDriver browser;
+   private Helper h;
+
+    SlackMethods (WebDriver browser) {
+        this.browser = browser;
+        System.out.println(browser);
+        this.h= new Helper (browser);
+    }
+
     static boolean result;
 
 
-    static void connectToWorkSpace(String workSpace, WebDriver browser) throws Exception {
-        browser.get(com.teamTests.TestData.protocol + com.teamTests.TestData.siteLink);
+     void connectToWorkSpace(String workSpace) throws InterruptedException {
+         browser.get(com.teamTests.TestData.protocol + com.teamTests.TestData.siteLink);
+//         browser.get(com.teamTests.TestData.protocol);
         browser.findElement(By.cssSelector("a[href='https://slack.com/signin']")).click();
-        Helper.findAndFill(By.cssSelector("#domain"), workSpace + "\n");
+         h.findAndFill(By.cssSelector("#domain"), workSpace + "\n");
     }
-
-    static void login(String username, String password, WebDriver browser) throws Exception {
+     void login(String username, String password) throws Exception {
         browser.get(com.teamTests.TestData.protocol + com.teamTests.TestData.workSpace + "." + com.teamTests.TestData.siteLink);
-        Helper.findAndFill(By.cssSelector("#email"), username);
-        Helper.findAndFill(By.cssSelector("#password"), password + "\n");
+        Thread.sleep(3000);
+         h.findAndFill(By.cssSelector("#email"), username);
+         h.findAndFill(By.cssSelector("#password"), password + "\n");
     }
 
-    static void slackBot(WebDriver browser) throws InterruptedException {
+     void slackBot() throws InterruptedException {
         browser.findElement(By.xpath("//span[text()='slackbot']")).click();
         Thread.sleep(3000);
 
-        Helper.findAndFill(By.cssSelector(".msg_input"), TestData.messageToBot + "\n");
+        h.findAndFill(By.cssSelector(".msg_input"), TestData.messageToBot + "\n");
 
     }
+    void sendMessage(String name, String text) {
+        browser.findElement(By.xpath("//span[text()='"+ name +"']")).click();
+        Assert.assertTrue(browser.findElement(By.cssSelector("button[id='im_title']")).getText().contains(name));
 
-    public static boolean checkLines (WebDriver browser) throws InterruptedException {
+        Actions actions = new Actions(browser);
+        actions.moveToElement(browser.findElement(By.id("msg_input"))).click();
+        actions.sendKeys(text + "\n").build().perform();
+    }
+
+    boolean checkLines() {
 
         List<WebElement> messageLines = browser.findElements(By.cssSelector("span.c-message__body"));
         for (WebElement line: messageLines){
@@ -46,7 +66,7 @@ public class SlackMethods {
         return result;
     }
 
-    public static void signOut(WebDriver browser){
+    public  void signOut(){
         browser.findElement(By.cssSelector("#team_menu")).click();
         browser.findElement(By.cssSelector("#menu_items_scroller li#logout.logout_url")).click();
     }
