@@ -20,14 +20,20 @@ public class TestSteps {
     @FindBy(css = "a[href='https://slack.com/signin']")
     WebElement buttonSignIn;
     @FindBy(css = "#domain")
-    /*static*/ WebElement selectorDomain;
+    WebElement selectorDomain;
     @FindBy(css = "#email")
     WebElement fieldEmail;
     @FindBy(css = "#password")
     WebElement fieldPassword;
-//    @FindBy(css = "#password")
-//    WebElement fieldPassword;
-//    button[id='im_title']";
+    @FindBy(css="button[id='im_title']")
+    WebElement selectorTitle;
+    @FindBy(css = "#msg_input")
+    WebElement selectorInput;
+    @FindBy(css="#team_menu")
+    WebElement buttonMenu;
+    @FindBy(css="#menu_items_scroller li#logout.logout_url")
+    WebElement buttonSignOut;
+
 
     public TestSteps(WebDriver browser) {
         this.browser = browser;
@@ -49,12 +55,13 @@ public class TestSteps {
     void sendMessage(String toUser, String text) {
         browser.get(TestData.workSpaceUrl + "/messages/");
         browser.findElement(By.xpath("//span[text()='"+ toUser +"']")).click();
-        Assert.assertTrue(browser.findElement(By.cssSelector("button[id='im_title']")).getText().contains(toUser));
+        Assert.assertTrue(selectorTitle.getText().contains(toUser));
 
         Actions actions = new Actions(browser);
-        actions.moveToElement(browser.findElement(By.id("msg_input"))).click();
+        actions.moveToElement(selectorInput).click();
         actions.sendKeys(text + "\n").build().perform();
     }
+    //does not work. needs fixing.
 
     String getMessage(String fromUser, String message) {
 
@@ -66,14 +73,13 @@ public class TestSteps {
 
         /*this option may also be used*/
 //        browser2.findElement(By.xpath("//span[text()='"+ TestData.userName_1 +"']")).click();
-        Assert.assertTrue(browser.findElement(By.cssSelector("button[id='im_title']")).getText().contains(fromUser));
+        Assert.assertTrue(selectorTitle.getText().contains(fromUser));
 
         String selector = "//span[@class='c-message__body' and text() = '" + message + "']";
         return browser.findElement(xpath(selector)).getText();
     }
-
     void signOut() {
-        browser.findElement(By.cssSelector("#team_menu")).click();
-        browser.findElement(By.cssSelector("#menu_items_scroller li#logout.logout_url")).click();
+        buttonMenu.click();
+        buttonSignOut.click();
     }
 }
