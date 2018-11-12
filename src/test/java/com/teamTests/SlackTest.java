@@ -48,7 +48,6 @@ public class SlackTest extends TestBase {
 
     @Test (dependsOnMethods = "loginSuccess")
     static void sendMessageToUser() {
-        browser.get(TestData.workSpaceUrl + "/messages/");
         steps.sendMessage(TestData.userName_2, TestData.messageText);
         Assert.assertEquals(browser.findElements(selectorForMessage).size(),1);
     }

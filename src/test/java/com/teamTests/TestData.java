@@ -3,7 +3,7 @@ package com.teamTests;
 public class TestData {
 
     static String protocol = "https://";
-    static String siteLink = "slack.com";
+    static String siteLink = "slack.com/";
     static String workSpaceName = "hillelqa";
     static String workSpaceUrl = TestData.protocol + TestData.workSpaceName + "." + TestData.siteLink;
 //    static String workSpaceUrl = "hillelqa.slack.com/";

@@ -30,12 +30,13 @@ public class TestSteps {
     }
 
     void login (String username, String password) throws Exception{
-        browser.get(TestData.protocol + TestData.workSpaceName + "." + TestData.siteLink);
+        browser.get(TestData.workSpaceUrl);
         h.findAndFill(By.cssSelector("#email"), username);
         h.findAndFill(By.cssSelector("#password"), password + "\n");
     }
 
     void sendMessage(String toUser, String text) {
+        browser.get(TestData.workSpaceUrl + "/messages/");
         browser.findElement(By.xpath("//span[text()='"+ toUser +"']")).click();
         Assert.assertTrue(browser.findElement(By.cssSelector("button[id='im_title']")).getText().contains(toUser));
 

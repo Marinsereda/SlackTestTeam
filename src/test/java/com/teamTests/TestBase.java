@@ -26,19 +26,19 @@ public class TestBase {
         browser.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
 
         /*initialize 2nd browser window*/
-        ChromeOptions options = new ChromeOptions();
+        /*ChromeOptions options = new ChromeOptions();
         options.addArguments("--incognito");
         DesiredCapabilities capabilities = DesiredCapabilities.chrome();
         capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-        browser2 = new ChromeDriver(options);
+        browser2 = new ChromeDriver(options);*/
 
         /*set up options for 1st browser window*/
-        browser2.manage().window().maximize();
-        browser2.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
+        /*browser2.manage().window().maximize();
+        browser2.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);*/
 
         /*initialize helpers for browsers*/
         h = new Helper(browser);
-        h2 = new Helper(browser2);
+        /*h2 = new Helper(browser2);*/
 
     }
 
@@ -47,7 +47,7 @@ public class TestBase {
         h = new Helper(browser);
         browser.quit();
 
-        h2 = new Helper(browser2);
-        browser2.quit();
+        /*h2 = new Helper(browser2);
+        browser2.quit();*/
     }
 }
