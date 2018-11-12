@@ -44,7 +44,7 @@ public class SlackTest extends TestBase {
         Assert.assertEquals(browser.findElements(By.xpath(selector)).size(),1);
 
         /*output message in console*/
-        System.out.println(TestData.userName_1 + " has sent message to " + TestData.userName_2 + ": " + browser1.findElement(By.xpath(selector)).getText());
+        System.out.println(TestData.userName_1 + " has sent message to " + TestData.userName_2 + ": " + browser.findElement(By.xpath(selector)).getText());
     }
 
     @Test(dependsOnMethods = "sendMessageToUser")
