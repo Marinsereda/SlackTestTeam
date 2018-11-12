@@ -14,8 +14,8 @@ public class Helper {
         browser = currentBrowser;
     }
 
-    public WebElement findAndFill(By selector, String value) {
-        WebElement element = browser.findElement(selector);
+    public WebElement findAndFill(WebElement element, String value) {
+//        WebElement element = browser.findElement(selector);
         element.sendKeys(value);
         return element;
     }
