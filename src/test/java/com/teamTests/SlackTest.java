@@ -8,30 +8,31 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-public class SlackTest extends TestSteps {
+public class SlackTest extends TestBase {
+    static TestSteps steps;
 
     @Test
     static void connectToWorkSpaceSuccess()throws Exception{
-        connectToWorkSpace(TestData.workSpace);
+        steps.connectToWorkSpace(TestData.workSpace);
         Assert.assertTrue(browser1.getCurrentUrl().contains(TestData.protocol + TestData.workSpace + "." + TestData.siteLink));
     }
 
     @Test (dependsOnMethods = "connectToWorkSpaceSuccess", alwaysRun = true , priority = -1)
     static void loginFail() throws Exception{
-        login("bad@login.com","badPass");
+        steps.login("bad@login.com","badPass");
         Assert.assertTrue(browser1.findElements(By.cssSelector("#team_menu_user_name")).size()<1);
     }
 
     @Test (dependsOnMethods = "connectToWorkSpaceSuccess", alwaysRun = true)
     static void loginSuccess() throws Exception{
-        login(TestData.login_1,TestData.password_1);
+        steps.login(TestData.login_1,TestData.password_1);
         Assert.assertTrue(browser1.findElements(By.cssSelector("#team_menu_user_name")).size()>0);
     }
 
     @Test (dependsOnMethods = "loginSuccess")
     static void sendMessageToUser() {
         browser1.get(TestData.protocol + TestData.workSpace + "." + TestData.siteLink + "messages/");
-        sendMessage(TestData.userName_2, TestData.messageText);
+        steps.sendMessage(TestData.userName_2, TestData.messageText);
 
         String selector = "//span[@class='c-message__body' and text() = '" + TestData.messageText + "']";
         Assert.assertEquals(browser1.findElements(By.xpath(selector)).size(),1);
@@ -42,14 +43,14 @@ public class SlackTest extends TestSteps {
 
     @Test(dependsOnMethods = "sendMessageToUser")
     static void getMessageFromUser() {
-        String messageFromUser = getMessage(TestData.userName_1, TestData.messageText);
+        String messageFromUser = steps.getMessage(TestData.userName_1, TestData.messageText);
         Assert.assertEquals(messageFromUser, TestData.messageText);
     }
 
 
     @Test (dependsOnMethods = "loginSuccess" , priority = 20)
     public static void testSignOut(){
-        signOut();
+        steps.signOut();
         Assert.assertTrue(browser1.findElements(By.cssSelector("#team_menu_user")).size()>0);
     }
 
