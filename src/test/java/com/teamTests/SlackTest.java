@@ -1,50 +1,56 @@
 package com.teamTests;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.time.Duration;
-
 public class SlackTest extends TestBase {
-    static TestSteps steps;
+
     @BeforeClass
     private static void init() {
         steps = PageFactory.initElements(browser, TestSteps.class);
     }
 
+    static TestSteps steps;
+
+    static By selectorForLogin = By.cssSelector("#team_menu_user_name");
+    /*@FindBy(css = "#team_menu_user_name")
+    static WebElement selectorForLogin;*/
+    static By selectorForLogOut = By.cssSelector("#team_menu_user");
+    /*@FindBy(css="#team_menu_user")
+    static WebElement selectorForLogOut;*/
+    static By selectorForMessage = By.xpath("//span[@class='c-message__body' and text() = '" + TestData.messageText + "']");
+    /*@FindBy ("//span[@class='c-message__body' and text() = '" + TestData.messageText + "']")
+    WebElement selectorForMessage;*/
+
+
     @Test
     static void connectToWorkSpaceSuccess()throws Exception{
-        steps.connectToWorkSpace(TestData.workSpace);
-        Assert.assertTrue(browser.getCurrentUrl().contains(TestData.protocol + TestData.workSpace + "." + TestData.siteLink));
+        steps.connectToWorkSpace(TestData.workSpaceName);
+        Assert.assertTrue(browser.getCurrentUrl().contentEquals(TestData.workSpaceUrl));
     }
 
     @Test (dependsOnMethods = "connectToWorkSpaceSuccess", alwaysRun = true , priority = -1)
     static void loginFail() throws Exception{
         steps.login("bad@login.com","badPass");
-        Assert.assertTrue(browser.findElements(By.cssSelector("#team_menu_user_name")).size()<1);
+        Assert.assertTrue(browser.findElements(selectorForLogin).size()<1);
     }
 
     @Test (dependsOnMethods = "connectToWorkSpaceSuccess", alwaysRun = true)
     static void loginSuccess() throws Exception{
         steps.login(TestData.login_1,TestData.password_1);
-        Assert.assertTrue(browser.findElements(By.cssSelector("#team_menu_user_name")).size()>0);
+        Assert.assertTrue(browser.findElements(selectorForLogin).size()>0);
     }
 
     @Test (dependsOnMethods = "loginSuccess")
     static void sendMessageToUser() {
-        browser.get(TestData.protocol + TestData.workSpace + "." + TestData.siteLink + "messages/");
+        browser.get(TestData.workSpaceUrl + "/messages/");
         steps.sendMessage(TestData.userName_2, TestData.messageText);
-
-        String selector = "//span[@class='c-message__body' and text() = '" + TestData.messageText + "']";
-        Assert.assertEquals(browser.findElements(By.xpath(selector)).size(),1);
-
-        /*output message in console*/
-        System.out.println(TestData.userName_1 + " has sent message to " + TestData.userName_2 + ": " + browser.findElement(By.xpath(selector)).getText());
+        Assert.assertEquals(browser.findElements(selectorForMessage).size(),1);
     }
 
     @Test(dependsOnMethods = "sendMessageToUser")
@@ -57,7 +63,7 @@ public class SlackTest extends TestBase {
     @Test (dependsOnMethods = "loginSuccess" , priority = 20)
     public static void testSignOut(){
         steps.signOut();
-        Assert.assertTrue(browser.findElements(By.cssSelector("#team_menu_user")).size()>0);
+        Assert.assertTrue(browser.findElements(selectorForLogOut).size()>0);
     }
 
 }
@@ -67,13 +73,13 @@ public class SlackTest extends TestBase {
 /* stuff for user #2*/
 //    @Test
 //    static void connectToWorkSpaceSuccess2()throws Exception{
-//        connectToWorkSpace2(TestData.workSpace);
-//        Assert.assertTrue(browser2.getCurrentUrl().contains(TestData.protocol + TestData.workSpace + "." + TestData.siteLink));
+//        connectToWorkSpace2(TestData.workSpaceName);
+//        Assert.assertTrue(browser2.getCurrentUrl().contains(TestData.protocol + TestData.workSpaceName + "." + TestData.siteLink));
 //    }
 
 
 //    static void login2 (String username, String password) throws Exception{
-//        browser2.get(TestData.protocol + TestData.workSpace + "." + TestData.siteLink);
+//        browser2.get(TestData.protocol + TestData.workSpaceName + "." + TestData.siteLink);
 //        h2.findAndFill(By.cssSelector("#email"), username);
 //        h2.findAndFill(By.cssSelector("#password"), password + "\n");
 

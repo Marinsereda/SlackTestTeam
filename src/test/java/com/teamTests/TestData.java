@@ -3,10 +3,11 @@ package com.teamTests;
 public class TestData {
 
     static String protocol = "https://";
-    static String siteLink = "slack.com/";
+    static String siteLink = "slack.com";
+    static String workSpaceName = "hillelqa";
+    static String workSpaceUrl = TestData.protocol + TestData.workSpaceName + "." + TestData.siteLink;
 //    static String workSpaceUrl = "hillelqa.slack.com/";
 
-    static String workSpace = "hillelqa";
     static String userName_1 = "Konstantin";
     static String login_1 = "apple.incor@gmail.com";
     static String password_1 = "Password2018";

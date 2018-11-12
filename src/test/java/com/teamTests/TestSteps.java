@@ -30,7 +30,7 @@ public class TestSteps {
     }
 
     void login (String username, String password) throws Exception{
-        browser.get(TestData.protocol + TestData.workSpace + "." + TestData.siteLink);
+        browser.get(TestData.protocol + TestData.workSpaceName + "." + TestData.siteLink);
         h.findAndFill(By.cssSelector("#email"), username);
         h.findAndFill(By.cssSelector("#password"), password + "\n");
     }
