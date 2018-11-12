@@ -8,9 +8,9 @@ import org.testng.annotations.BeforeTest;
 import java.util.concurrent.TimeUnit;
 
 public class TestBase {
-    public static WebDriver browser1;
+    public static WebDriver browser;
     public static WebDriver browser2;
-    static Helper h1;
+    static Helper h;
     static Helper h2;
 
     @BeforeTest
@@ -19,11 +19,11 @@ public class TestBase {
         System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
 
         /*initialize 1st browser window*/
-        browser1 = new ChromeDriver();
+        browser = new ChromeDriver();
 
         /*set up options for 1st browser window*/
-        browser1.manage().window().maximize();
-        browser1.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
+        browser.manage().window().maximize();
+        browser.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
 
         /*initialize 2nd browser window*/
         ChromeOptions options = new ChromeOptions();
@@ -37,15 +37,15 @@ public class TestBase {
         browser2.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
 
         /*initialize helpers for browsers*/
-        h1 = new Helper(browser1);
+        h = new Helper(browser);
         h2 = new Helper(browser2);
 
     }
 
 //    @AfterTest
     public void closeBrowser() {
-        h1 = new Helper(browser1);
-        browser1.quit();
+        h = new Helper(browser);
+        browser.quit();
 
         h2 = new Helper(browser2);
         browser2.quit();
