@@ -25,6 +25,8 @@ public class TestBase {
         browser.manage().window().maximize();
         browser.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
 
+        h = new Helper(browser);
+
         /*initialize 2nd browser window*/
         /*ChromeOptions options = new ChromeOptions();
         options.addArguments("--incognito");
@@ -37,7 +39,6 @@ public class TestBase {
         browser2.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);*/
 
         /*initialize helpers for browsers*/
-        h = new Helper(browser);
         /*h2 = new Helper(browser2);*/
 
     }
